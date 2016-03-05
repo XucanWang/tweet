@@ -20,15 +20,15 @@ public class ImportES {
                         .multiThreaded(true)
                         .build());
                 client = ft.getObject();
-                String source = jsonBuilder() 
-                        .startObject().field("userName", status.getUser().getName())
+                String json = jsonBuilder()
+                        .startObject().field("keyword",index)
+                        .field("userName", status.getUser().getName())
                         .field("createdTime", status.getCreatedAt().toString())
                         .field("text", status.getText())
-                        .field("keyword",index)
                         .field("latitude", status.getGeoLocation().getLatitude())
                         .field("longtitude",status.getGeoLocation().getLongitude())
                         .endObject().string();
-                Index add = new Index.Builder(source).index(index).type("tweet").build();
+                Index add = new Index.Builder(json).index(index).type("tweet").build();
                 client.execute(add);
             } catch (UnknownHostException e) {
                 e.printStackTrace();
